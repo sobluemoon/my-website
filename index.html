@@ -1500,7 +1500,15 @@
   function startMusic() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     musicOn = true;
-    playNote(0);
+    
+    // Resume AudioContext on mobile - this is critical!
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().then(() => {
+        playNote(0);
+      });
+    } else {
+      playNote(0);
+    }
   }
 
   function playNote(seq) {
@@ -1648,3 +1656,4 @@
   </script>
 </body>
 </html>
+
