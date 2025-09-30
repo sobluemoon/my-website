@@ -282,6 +282,7 @@
     </div>
     <div class="actions">
       <button class="btn btn--primary" id="btnJump">🚀Nhảy</button>
+      <button class="btn" id="btnInteract">💌Tương tác</button>
       <button class="btn btn--ghost" id="btnBlow">💨Thổi nến</button>
       <button class="btn" id="btnLights">💡Đèn</button>
     </div>
@@ -1018,7 +1019,7 @@
         metalness:.4 
       })
     );
-    outerFrame.position.set(0,2.5,-12.42);
+    outerFrame.position.set(0,4.7,-12.42); 
     outerFrame.castShadow=true; 
     scene.add(outerFrame);
     
@@ -1030,7 +1031,7 @@
         metalness:.6 
       })
     );
-    innerFrame.position.set(0,2.5,-12.36);
+    innerFrame.position.set(0,4.7,-12.36); 
     scene.add(innerFrame);
     
     // Load photo with error handling
@@ -1044,7 +1045,7 @@
           roughness:.75 
         })
       );
-      pic.position.set(0,2.5,-12.31); 
+      pic.position.set(0,4.7,-12.31); 
       pic.receiveShadow=true; 
       scene.add(pic);
       pic.userData.interactable='photo';
@@ -1067,7 +1068,7 @@
           roughness:.75 
         })
       );
-      placeholder.position.set(0,2.5,-12.31);
+      placeholder.position.set(0,4.7,-12.31); 
       placeholder.receiveShadow=true; 
       scene.add(placeholder);
       placeholder.userData.interactable='photo';
@@ -1078,7 +1079,7 @@
     // Picture lights
     const s1=new THREE.SpotLight(0xfff5e6,1.8,16,Math.PI/6.5,.5); 
     s1.position.set(-2.5,8.5,-10); 
-    s1.target.position.set(0,2.5,-12.3);
+    s1.target.position.set(0,4.7,-12.3); 
     s1.castShadow = true;
     s1.userData.intensity = 1.8;
     scene.add(s1); 
@@ -1087,7 +1088,7 @@
     
     const s2=new THREE.SpotLight(0xfff5e6,1.8,16,Math.PI/6.5,.5); 
     s2.position.set(2.5,8.5,-10);  
-    s2.target.position.set(0,2.5,-12.3);
+    s2.target.position.set(0,4.7,-12.3); 
     s2.castShadow = true;
     s2.userData.intensity = 1.8;
     scene.add(s2); 
@@ -1646,5 +1647,4 @@
 
   </script>
 </body>
-
 </html>
