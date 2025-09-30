@@ -383,11 +383,33 @@
     canvas.focus({preventScroll:true});
     if(isDesktop){ document.getElementById('lockTip').classList.add('active'); }
     
-    // Initialize audio context first with user interaction
+    // Initialize audio context with iOS unlock trick
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
-    startMusic();
+    // iOS UNLOCK: Play a silent sound to unlock audio
+    const unlockSound = audioCtx.createOscillator();
+    const unlockGain = audioCtx.createGain();
+    unlockGain.gain.value = 0; // Silent
+    unlockSound.connect(unlockGain);
+    unlockGain.connect(audioCtx.destination);
+    unlockSound.start(0);
+    unlockSound.stop(0.001);
+    
+    // Resume if suspended, then start music
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().then(() => {
+        startMusic();
+      });
+    } else {
+      startMusic();
+    }
+    
     animate();
+  }
+  
+  function startMusic() {
+    musicOn = true;
+    playNote(0);
   }
 
   function init3D(){
@@ -1663,6 +1685,7 @@
   </script>
 </body>
 </html>
+
 
 
 
