@@ -1527,7 +1527,6 @@
   }
 
   function startMusic() {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     musicOn = true;
     
     // Resume AudioContext on mobile - this is critical!
@@ -1685,6 +1684,7 @@
   </script>
 </body>
 </html>
+
 
 
 
