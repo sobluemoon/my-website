@@ -1309,12 +1309,12 @@
     const joy = document.getElementById('joy');
     const joyStick = document.getElementById('joyStick');
     const controlsMobile = document.getElementById('controlsMobile');
-
+  
     joy.addEventListener('touchstart', (e) => {
       e.preventDefault();
       joyActive = true;
     });
-
+  
     joy.addEventListener('touchmove', (e) => {
       e.preventDefault();
       const touch = e.touches[0];
@@ -1333,29 +1333,32 @@
       joyVec.x = dx / maxR;
       joyVec.y = dy / maxR;
     });
-
+  
     joy.addEventListener('touchend', (e) => {
       e.preventDefault();
       joyActive = false;
       joyStick.style.transform = 'translate(0,0)';
       joyVec = {x:0, y:0};
     });
-
-    // Look controls - touch anywhere on canvas
+  
+    // Helper function to check if touch is on any control element
+    function isTouchOnControls(touch) {
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!element) return false;
+      
+      // Check if touch is on joystick or any button
+      return element.closest('#joy') !== null || 
+             element.closest('.btn') !== null ||
+             element.closest('.fab') !== null;
+    }
+  
+    // Look controls - touch anywhere EXCEPT on actual controls
     canvas.addEventListener('touchstart', (e) => {
-      // Only capture first touch for looking
       if (lookTouchId === null && e.touches.length > 0) {
         const touch = e.touches[0];
         
-        // Check if touch is on control area at bottom
-        const rect = controlsMobile.getBoundingClientRect();
-        const isOnControls = (
-          touch.clientY >= rect.top &&
-          touch.clientX >= rect.left && 
-          touch.clientX <= rect.right
-        );
-        
-        if (!isOnControls) {
+        // Only block if touching actual control elements
+        if (!isTouchOnControls(touch)) {
           e.preventDefault();
           lookTouchId = touch.identifier;
           lastTouchX = touch.clientX;
@@ -1363,7 +1366,7 @@
         }
       }
     }, {passive: false});
-
+  
     canvas.addEventListener('touchmove', (e) => {
       for (let touch of e.touches) {
         if (touch.identifier === lookTouchId) {
@@ -1372,8 +1375,8 @@
           const dy = touch.clientY - lastTouchY;
           
           euler.setFromQuaternion(camera.quaternion);
-          euler.y -= dx * 0.005;  // Increased sensitivity
-          euler.x -= dy * 0.005;  // Increased sensitivity
+          euler.y -= dx * 0.005;
+          euler.x -= dy * 0.005;
           euler.x = Math.max(-PI_2 + 0.01, Math.min(PI_2 - 0.01, euler.x));
           camera.quaternion.setFromEuler(euler);
           
@@ -1383,7 +1386,7 @@
         }
       }
     }, {passive: false});
-
+  
     canvas.addEventListener('touchend', (e) => {
       for (let touch of e.changedTouches) {
         if (touch.identifier === lookTouchId) {
@@ -1392,7 +1395,7 @@
         }
       }
     });
-
+  
     canvas.addEventListener('touchcancel', (e) => {
       for (let touch of e.changedTouches) {
         if (touch.identifier === lookTouchId) {
@@ -1402,7 +1405,7 @@
       }
     });
   }
-
+    
   function getFloorHeightAt(x, z) {
     let maxFloor = 0;
     for (let col of colliders) {
@@ -1660,6 +1663,7 @@
   </script>
 </body>
 </html>
+
 
 
 
